@@ -13,10 +13,8 @@ class Transaction < ApplicationRecord
 
 
   def self.reverse(uuid)
-    debugger
     Transaction.transaction do
       transaction = self.where(uuid: uuid, reversed: :false).take
-      debugger
       if transaction.present?
         if transaction.capital_injection?
           Account.withdraw(transaction.to, transaction.amount, :true, "reversing capital_injection on account number: #{transaction.to.id}")
